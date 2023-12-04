@@ -1,4 +1,4 @@
-package project.footprint.domain.user.entity;
+package project.footprint.api.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

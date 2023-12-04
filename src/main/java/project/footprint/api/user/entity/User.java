@@ -1,8 +1,14 @@
-package project.footprint.domain.user.entity;
+package project.footprint.api.user.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,4 +21,8 @@ public class User {
     private String profileUrl;
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    public void encryptPassword(BCryptPasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
 }
