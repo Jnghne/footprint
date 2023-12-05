@@ -10,6 +10,7 @@ import project.footprint.api.user.dto.request.UserJoinRequest;
 import project.footprint.api.user.dto.request.UserLoginRequest;
 import project.footprint.api.user.entity.User;
 import project.footprint.api.user.repository.UserRepository;
+import project.footprint.global.util.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,21 +25,25 @@ class UserServiceTest {
     UserRepository userRepository;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
-    @DisplayName("신규 사용자 가입")
+    @DisplayName("신규 사용자 가입 - 모든 값을 입력한 경우")
     @Test
-    void join() {
+    void joinSuccessByAllInput() {
         // given
         String email = "jh13012@gmail.com";
+        String username = "이종현";
         String password = "1234";
         String nickname = "testNick";
         String profileUrl = "localhost";
+        String subEmail = "jh13012@naver.com";
 
         UserJoinRequest request = UserJoinRequest.builder()
                 .email(email)
                 .password(password)
                 .passwordConfirm(password)
+                .username(username)
+                .subEmail(subEmail)
                 .profileUrl(profileUrl)
                 .nickname(nickname).build();
 
@@ -49,8 +54,35 @@ class UserServiceTest {
 
         // then
         assertThat(findUser).isNotNull();
-        assertThat(findUser).extracting("nickname", "profileUrl")
-                .contains(nickname, profileUrl);
+        assertThat(findUser).extracting("email","username","nickname", "subEmail", "profileUrl")
+                .contains(email,username, nickname, subEmail, profileUrl);
+    }
+
+    @DisplayName("신규 사용자 가입 - 필수값만 입력된 경우")
+    @Test
+    void joinSuccessByRequiredInput() {
+        // given
+        String email = "jh13012@gmail.com";
+        String username = "이종현";
+        String password = "1234";
+        String nickname = "testNick";
+
+        UserJoinRequest request = UserJoinRequest.builder()
+                .email(email)
+                .password(password)
+                .passwordConfirm(password)
+                .username(username)
+                .nickname(nickname).build();
+
+        userService.join(request);
+
+        // when
+        User findUser = userRepository.findByEmail(email);
+
+        // then
+        assertThat(findUser).isNotNull();
+        assertThat(findUser).extracting("email","username","nickname", "subEmail", "profileUrl")
+                .contains(email,username, nickname, null, null);
     }
 
     @DisplayName("로그인 성공")
@@ -58,10 +90,12 @@ class UserServiceTest {
     void login() {
         // given
         String email = "jh13012@gmail.com";
+        String username = "이종현";
         String password = "1234";
         String nickname = "testNick";
         String profileUrl = "localhost";
-        User user = createUser(email, password, nickname, profileUrl);
+        String subEmail = "jh13012@naver.com";
+        User user = createUser(email, password, username,nickname, profileUrl,subEmail);
 
         user.encryptPassword(passwordEncoder);
 
@@ -78,11 +112,13 @@ class UserServiceTest {
         assertThat(token).isNotNull();
     }
 
-    private User createUser(String email, String password, String nickname, String profileUrl) {
+    private User createUser(String email, String password, String username, String nickname, String profileUrl, String subEmail) {
         return User.builder()
                 .email(email)
                 .password(password)
+                .username(username)
                 .nickname(nickname)
+                .subEmail(subEmail)
                 .profileUrl(profileUrl).build();
     }
 
@@ -91,10 +127,12 @@ class UserServiceTest {
     void loginFailedByEmail() {
         // given
         String email = "jh13012@gmail.com";
+        String username = "이종현";
         String password = "1234";
         String nickname = "testNick";
         String profileUrl = "localhost";
-        User user = createUser(email, password, nickname, profileUrl);
+        String subEmail = "jh13012@naver.com";
+        User user = createUser(email, password, username,nickname, profileUrl,subEmail);
 
         user.encryptPassword(passwordEncoder);
 
@@ -117,10 +155,12 @@ class UserServiceTest {
     void loginFailedByPassword() {
         // given
         String email = "jh13012@gmail.com";
+        String username = "이종현";
         String password = "1234";
         String nickname = "testNick";
         String profileUrl = "localhost";
-        User user = createUser(email, password, nickname, profileUrl);
+        String subEmail = "jh13012@naver.com";
+        User user = createUser(email, password, username,nickname, profileUrl,subEmail);
 
         user.encryptPassword(passwordEncoder);
 

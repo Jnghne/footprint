@@ -1,18 +1,18 @@
 package project.footprint.api.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.footprint.api.user.dto.request.UserJoinRequest;
 import project.footprint.api.user.dto.request.UserLoginRequest;
 import project.footprint.api.user.entity.User;
 import project.footprint.api.user.repository.UserRepository;
+import project.footprint.global.util.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     public void join(UserJoinRequest joinRequest) {
         // 1. make joinRequest => User
         User user = UserJoinRequest.toEntity(joinRequest);
