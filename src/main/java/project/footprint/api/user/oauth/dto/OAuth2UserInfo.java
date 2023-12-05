@@ -1,4 +1,4 @@
-package project.footprint.api.oauth.dto;
+package project.footprint.api.user.oauth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static project.footprint.api.oauth.dto.ProviderType.GOOGLE;
 
 @Getter
 @Builder

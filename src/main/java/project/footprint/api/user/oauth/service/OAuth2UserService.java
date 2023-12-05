@@ -1,21 +1,19 @@
-package project.footprint.api.oauth.service;
+package project.footprint.api.user.oauth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import project.footprint.api.oauth.domain.UserPrincipal;
-import project.footprint.api.oauth.dto.OAuth2UserInfo;
-import project.footprint.api.oauth.dto.ProviderType;
+import project.footprint.api.user.oauth.domain.UserPrincipal;
+import project.footprint.api.user.oauth.dto.OAuth2UserInfo;
+import project.footprint.api.user.oauth.dto.ProviderType;
 import project.footprint.api.user.entity.RoleType;
 import project.footprint.api.user.entity.User;
 import project.footprint.api.user.repository.UserRepository;
 import project.footprint.global.util.PasswordEncoder;
 
-import java.util.List;
 import java.util.Map;
 
 @Service

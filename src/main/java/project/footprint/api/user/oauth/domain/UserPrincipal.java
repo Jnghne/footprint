@@ -1,4 +1,4 @@
-package project.footprint.api.oauth.domain;
+package project.footprint.api.user.oauth.domain;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

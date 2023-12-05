@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import project.footprint.api.oauth.domain.UserPrincipal;
+import project.footprint.api.user.oauth.domain.UserPrincipal;
 import project.footprint.api.user.dto.request.UserJoinRequest;
 import project.footprint.api.user.dto.request.UserLoginRequest;
 import project.footprint.api.user.service.UserService;

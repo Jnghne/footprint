@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import project.footprint.global.entity.BaseEntity;
 import project.footprint.global.util.PasswordEncoder;
 
 @Entity
@@ -14,7 +15,7 @@ import project.footprint.global.util.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 @DynamicInsert
-public class User {
+public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

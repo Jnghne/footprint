@@ -1,4 +1,4 @@
-package project.footprint.api.oauth.dto;
+package project.footprint.api.user.oauth.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

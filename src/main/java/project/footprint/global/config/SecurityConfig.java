@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import project.footprint.api.oauth.service.OAuth2UserService;
+import project.footprint.api.user.oauth.service.OAuth2UserService;
 import project.footprint.api.user.entity.RoleType;
 import project.footprint.global.handler.OAuth2SuccessHandler;
 
