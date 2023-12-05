@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import project.footprint.api.user.oauth.service.OAuth2UserService;
 import project.footprint.api.user.entity.RoleType;
+import project.footprint.global.handler.CustomAuthenticationEntryPoint;
+import project.footprint.global.handler.OAuth2FailureHandler;
 import project.footprint.global.handler.OAuth2SuccessHandler;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class SecurityConfig {
 
     private final OAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler successHandler;
+    private final OAuth2FailureHandler failureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,7 +37,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults()) // CorsConfigurationSource의 cors 설정을 사용
-                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // disable session
+                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // disable session
                 .headers((headerConfig) -> headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
 //                .addFilterBefore(new TokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 인증/인가 설정
@@ -52,6 +55,7 @@ public class SecurityConfig {
                     logoutConfigurer.permitAll();
                     logoutConfigurer.logoutSuccessUrl("/");
                 })
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 // oauth 로그인 시작
                 // - spring oauth client 가 대신 인증 요청, 액세스 토큰 요청 과정을 자동으로 수행한다.
                 .oauth2Login(oauth2LoginConfig ->{
@@ -60,7 +64,9 @@ public class SecurityConfig {
                             .userInfoEndpoint(
                                     userInfo-> userInfo.userService(oAuth2UserService)
                             )
-                            .successHandler(successHandler);
+                            .successHandler(successHandler)
+                            .failureHandler(failureHandler);
+
                 })
                 .build();
     }
