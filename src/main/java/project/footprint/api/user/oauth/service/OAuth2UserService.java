@@ -7,14 +7,14 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import project.footprint.api.user.oauth.domain.UserPrincipal;
-import project.footprint.api.user.oauth.dto.OAuth2UserInfo;
+import project.footprint.api.user.oauth.dto.OAuthAttributes;
 import project.footprint.api.user.oauth.dto.ProviderType;
-import project.footprint.api.user.entity.RoleType;
 import project.footprint.api.user.entity.User;
 import project.footprint.api.user.repository.UserRepository;
 import project.footprint.global.util.PasswordEncoder;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,28 +29,19 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase(); // google
 
+
         ProviderType providerType = ProviderType.valueOf(provider);
 
-        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(providerType, oAuth2User);
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(providerType, oAuth2User);
+        Map<String,Object> attributes = oAuthAttributes.toMap();
 
-        User savedUser = userRepository.findByEmail(oAuth2UserInfo.getEmail());
-        Map<String,Object> attributes = oAuth2UserInfo.toMap();
-
-
-        // 최초 로그인 시 , 가입 처리
-        if(savedUser == null) {
-            User user = User.of(oAuth2UserInfo.getEmail(),
-                    "footprint",
-                    oAuth2UserInfo.getUsername(),
-                    oAuth2UserInfo.getUsername(),
-                    null,
-                    oAuth2UserInfo.getProvider(),
-                    oAuth2UserInfo.getProviderId(),
-                    oAuth2UserInfo.getProfileUrl(),
-                    RoleType.USER);
-            user.encryptPassword(passwordEncoder);
-            savedUser = userRepository.save(user);
-        }
+        User savedUser = userRepository.findByEmail(oAuthAttributes.getEmail())
+                .orElseGet(()->{
+                    // 최초 가입 처리
+                    User user = oAuthAttributes.toEntity();
+                    user.encryptPassword(passwordEncoder);
+                    return userRepository.save(user);
+                });
 
         return UserPrincipal.of(savedUser, attributes);
     }

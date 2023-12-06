@@ -6,6 +6,7 @@ import project.footprint.api.user.dto.request.UserJoinRequest;
 import project.footprint.api.user.dto.request.UserLoginRequest;
 import project.footprint.api.user.entity.User;
 import project.footprint.api.user.repository.UserRepository;
+import project.footprint.global.util.JwtUtil;
 import project.footprint.global.util.PasswordEncoder;
 
 @Service
@@ -13,6 +14,7 @@ import project.footprint.global.util.PasswordEncoder;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
     public void join(UserJoinRequest joinRequest) {
         // 1. make joinRequest => User
         User user = UserJoinRequest.toEntity(joinRequest);
@@ -30,7 +32,7 @@ public class UserService {
         String token = "test";
 
         // email로 사용자 조회
-        User findUser = userRepository.findByEmail(request.getEmail());
+        User findUser = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
 
         if(findUser == null) {
             throw new IllegalArgumentException("이메일이 일치하지 않습니다.");
@@ -41,6 +43,6 @@ public class UserService {
             throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
         };
 
-        return token;
+        return jwtUtil.createJwt(findUser.getId(), findUser.getEmail());
     }
 }

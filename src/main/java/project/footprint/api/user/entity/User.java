@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import project.footprint.global.entity.BaseEntity;
 import project.footprint.global.util.PasswordEncoder;
 

@@ -35,7 +35,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        User findMember = userRepository.findByEmail(email);
+        User findMember = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
 
         // then
         assertThat(findMember).isNotNull();

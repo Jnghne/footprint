@@ -11,7 +11,6 @@ import project.footprint.api.user.repository.UserRepository;
 import project.footprint.global.util.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -74,7 +73,7 @@ class UserTest {
         entityManager.clear();
 
         // when
-        User findUser = userRepository.findByEmail(email);
+        User findUser = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
 
         System.out.println("findUser = " + findUser.getRole());
 

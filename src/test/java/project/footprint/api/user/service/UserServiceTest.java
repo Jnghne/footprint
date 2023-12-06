@@ -50,7 +50,7 @@ class UserServiceTest {
         userService.join(request);
 
         // when
-        User findUser = userRepository.findByEmail(email);
+        User findUser = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
 
         // then
         assertThat(findUser).isNotNull();
@@ -77,7 +77,7 @@ class UserServiceTest {
         userService.join(request);
 
         // when
-        User findUser = userRepository.findByEmail(email);
+        User findUser = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
 
         // then
         assertThat(findUser).isNotNull();
