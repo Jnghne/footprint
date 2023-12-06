@@ -1,4 +1,4 @@
-# footprint 
+# 🐾 footprint 
 footprint는 반려동물 동반 시설 정보를 다른 사용자들과 공유할 수 있는 플랫폼입니다. 
 
 # 기능 
