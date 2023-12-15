@@ -32,11 +32,7 @@ public class UserService {
         String token = "test";
 
         // email로 사용자 조회
-        User findUser = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException(" 멤버가 없음 "));
-
-        if(findUser == null) {
-            throw new IllegalArgumentException("이메일이 일치하지 않습니다.");
-        }
+        User findUser = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("이메일이 일치하지 않습니다."));
 
         // email로 조회한 사용자의 password와 요청의 패스워드가 같은지 확인
         if(!passwordEncoder.matches(request.getPassword(), findUser.getPassword())){
