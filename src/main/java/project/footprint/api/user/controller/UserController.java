@@ -2,6 +2,7 @@ package project.footprint.api.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import project.footprint.api.user.dto.request.UserLoginRequest;
 import project.footprint.api.user.service.UserService;
 import project.footprint.global.util.JwtUtil;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")

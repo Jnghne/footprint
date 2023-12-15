@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,8 +57,8 @@ public class SecurityConfig {
                                 .requestMatchers(new AntPathRequestMatcher("/users/admins")).hasRole(RoleType.ADMIN.getType())
                                 .requestMatchers(new AntPathRequestMatcher("/users/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/users")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/connect")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/test/oauth/login")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                                 .anyRequest().authenticated()
