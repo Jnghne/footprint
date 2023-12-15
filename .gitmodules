@@ -1,3 +1,3 @@
 [submodule "footprint-secret"]
 	path = footprint-secret
-	url = https://github.com/Jnghne/footprint-secret.git
+	url = git@github.com:Jnghne/footprint-secret.git
